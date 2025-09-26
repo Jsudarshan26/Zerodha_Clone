@@ -1,0 +1,15 @@
+/* Default for large screens and above */
+.hero-img {
+  max-width: 100%;  /* allow full scaling on lg+ */
+  height: auto;
+}
+
+/* For small (≤576px) and medium (≥576px <992px) screens */
+@media (max-width: 991.98px) {
+  .hero-img {
+    max-width: 250px;  /* lock to 250px or less */
+    width: 100%;       /* shrink if container is smaller */
+    height: auto;
+  }
+}
+
