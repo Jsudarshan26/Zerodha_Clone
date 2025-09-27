@@ -1,0 +1,11 @@
+# Ignore all node_modules in the project
+**/node_modules/
+
+# Ignore all VS Code settings folders
+**/.vscode/
+
+# Environment files
+*.env
+
+# Log files
+*.log
