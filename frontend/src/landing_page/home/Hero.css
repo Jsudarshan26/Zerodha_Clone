@@ -1,0 +1,9 @@
+/* Shrink only on small screens */
+
+
+
+@media (min-width: 992px) {
+  .hero-btn {
+    width: 20% !important;
+  }
+}

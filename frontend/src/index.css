@@ -1,0 +1,107 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+
+ 
+}
+
+/* .nav-link{
+  margin-left:40px;
+} */
+
+@media (min-width: 992px) {
+  .extra-padding {
+    padding-left: 6rem;
+    padding-right: 6rem;
+  }
+}
+
+
+
+
+
+
+
+
+
+/* Smooth transition for all Bootstrap columns */
+.col,
+[class*="col-"] {      /* covers col, col-lg-6, col-md-12, etc. */
+  transition: all 0.4s ease-in-out;
+}
+
+
+/* Slight shrink & fade on smaller breakpoints */
+@media (max-width: 992px) {  /* md breakpoint */
+  .col,
+  [class*="col-"] {
+    transform: scale(0.98);
+    opacity: 0.95;
+  }
+}
+
+
+
+
+
+
+
+
+#supportHero {
+  background-color: rgb(56, 126, 209);
+  color: white;
+}
+
+#supportHero a {
+  color: white;
+  /* text-decoration: none; */
+}
+
+#supportHero input {
+  padding: 15px;
+  width: 100%;
+  font-size: 18px;
+  border-radius: 10px;
+  border: none;
+  box-sizing: border-box;
+}
+
+#supportWrapper {
+  margin: 0 100px;
+}
+
+/* 🌐 Responsive Fixes */
+@media (max-width: 991px) { /* Tablets & mid screens */
+  #supportWrapper {
+    margin: 0 40px;
+  }
+}
+
+@media (max-width: 576px) { /* Mobile screens */
+  #supportWrapper {
+    margin: 0 20px;
+    text-align: center;
+  }
+
+  #supportHero h1 {
+    font-size: 1.25rem;
+  }
+
+  #supportHero input {
+    padding: 12px;
+    font-size: 16px;
+  }
+}
+

@@ -1,0 +1,15 @@
+.mb-sm-md-5 {
+  margin-bottom: 1rem; /* default for small screens */
+}
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+  .mb-sm-md-5 {
+    margin-bottom: 3rem; /* sm + md only */
+  }
+}
+
+@media (min-width: 992px) {
+  .mb-sm-md-5 {
+    margin-bottom: 0; /* reset for lg+ */
+  }
+}
