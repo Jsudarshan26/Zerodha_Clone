@@ -71,59 +71,13 @@ const Signup = () => {
   };
 
   return (
-    <div className="signup-container">
-      <div className="signup-form">
-        <h2>Create Your Zerodha Account</h2>
-        {error && <div className="error-message">{error}</div>}
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email Address"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password (min. 6 characters)"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            required
-          />
-          <button type="submit" disabled={loading}>
-            {loading ? "Creating Account..." : "Create Account"}
-          </button>
-        </form>
-        <p>
-          Already have an account?{" "}
-          <span 
-            className="login-link" 
-            onClick={() => navigate("/login")}
-          >
-            Login
-          </span>
-        </p>
-      </div>
-    </div>
+    <>
+    
+      <h1>SignUp</h1>
+ 
+      
+    </>
   );
-};
+}
 
-export default Signup;
+export default SignUp;

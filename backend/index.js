@@ -1,7 +1,9 @@
 require("dotenv").config();
 
 const express = require("express");
+
 const mongoose = require("mongoose");
+
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
@@ -9,7 +11,9 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const { HoldingsModel } = require("./model/HoldingsModel");
+
 const { PositionsModel } = require("./model/PositionsModel");
+
 const { OrdersModel } = require("./model/OrdersModel");
 const User = require("./model/UserModel");
 
@@ -217,15 +221,17 @@ app.post("/neworder", (req, res) => {
     name: req.body.name,
     qty: req.body.qty,
     price: req.body.price,
-    mode: req.body.mode,
+    mode: req.body. mode,
   });
 
   newOrder.save();
-  res.json({ message: "Order placed successfully", order: newOrder });
+
+  res.send("Order Send");
 });
 
 app.get("/allHoldings", async (req, res) => {
   let allHoldings = await HoldingsModel.find({});
+
   res.json(allHoldings);
 });
 

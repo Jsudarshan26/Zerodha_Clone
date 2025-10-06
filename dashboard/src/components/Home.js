@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+
 import Dashboard from "./Dashboard";
 import TopBar from "./TopBar";
 
@@ -55,8 +56,8 @@ const Home = () => {
 
   return (
     <>
-      <TopBar user={user} onLogout={handleLogout} />
-      <Dashboard user={user} />
+      <TopBar />
+      <Dashboard />
     </>
   );
 };
