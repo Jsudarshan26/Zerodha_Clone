@@ -1,7 +1,8 @@
 import React from "react";
+
 import Menu from "./Menu";
 
-const TopBar = ({ user, onLogout }) => {
+const TopBar = () => {
   return (
     <div className="topbar-container">
       <div className="indices-container">
@@ -16,19 +17,6 @@ const TopBar = ({ user, onLogout }) => {
           <p className="percent"></p>
         </div>
       </div>
-
-      {/* User Info Section */}
-      {user && (
-        <div className="user-info-section">
-          <div className="user-welcome">
-            <span className="welcome-text">Welcome, </span>
-            <span className="user-name">{user.name}</span>
-          </div>
-          <button onClick={onLogout} className="logout-btn">
-            Logout
-          </button>
-        </div>
-      )}
 
       <Menu />
     </div>
