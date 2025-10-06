@@ -5,35 +5,36 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const { HoldingsModel } = require("./model/HoldingsModel");
 const { PositionsModel } = require("./model/PositionsModel");
 const { OrdersModel } = require("./model/OrdersModel");
 const User = require("./model/UserModel");
-const generateToken = require("./utils/generateToken");
 
 const PORT = process.env.PORT || 3002;
 const uri = process.env.MONGO_URL;
 
 const app = express();
 
-// CORS configuration for cross-subdomain
-app.use(
-  cors({
-    origin: [
-      "https://zerodha-clone-frontend-yb92.onrender.com",
-      "https://zerodha-clone-dashboard-krkg.onrender.com",
-      "http://localhost:3000",
-      "http://localhost:3001",
-    ],
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+// CORS configuration - ALLOW ALL for testing
+app.use(cors({
+  origin: true, // Allow all origins
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
+}));
 
 app.use(bodyParser.json());
 app.use(cookieParser());
+
+// Generate JWT Token
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET || "fallback_secret", {
+    expiresIn: "30d",
+  });
+};
 
 // ==================== AUTHENTICATION ROUTES ====================
 
@@ -58,42 +59,32 @@ app.post("/api/auth/register", async (req, res) => {
 
     if (user) {
       const token = generateToken(user._id);
-
-      // Set HTTP-only cookie for cross-subdomain access
-
+      
+      // Set cookie WITHOUT domain restriction
       res.cookie('token', token, {
         httpOnly: true,
         secure: true,
         sameSite: 'none',
-        domain: '.onrender.com',
         maxAge: 30 * 24 * 60 * 60 * 1000,
         path: '/'
       });
 
-
-
-      
-      res.cookie(
-        "user",
-        JSON.stringify({
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-        }),
-        {
-          secure: true,
-          sameSite: "none",
-          domain: ".onrender.com",
-          maxAge: 30 * 24 * 60 * 60 * 1000,
-          path: "/",
-        }
-      );
+      res.cookie('user', JSON.stringify({
+        _id: user._id,
+        name: user.name,
+        email: user.email
+      }), {
+        secure: true,
+        sameSite: 'none',
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        path: '/'
+      });
 
       res.status(201).json({
         _id: user._id,
         name: user.name,
         email: user.email,
-        message: "Registration successful",
+        message: "Registration successful"
       });
     } else {
       res.status(400).json({ message: "Invalid user data" });
@@ -115,38 +106,32 @@ app.post("/api/auth/login", async (req, res) => {
 
     if (user && (await user.matchPassword(password))) {
       const token = generateToken(user._id);
-
-      // Set HTTP-only cookie for cross-subdomain access
-      res.cookie("token", token, {
+      
+      // Set cookie WITHOUT domain restriction
+      res.cookie('token', token, {
         httpOnly: true,
         secure: true,
-        sameSite: "none",
-        domain: ".onrender.com",
+        sameSite: 'none',
         maxAge: 30 * 24 * 60 * 60 * 1000,
-        path: "/",
+        path: '/'
       });
 
-      res.cookie(
-        "user",
-        JSON.stringify({
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-        }),
-        {
-          secure: true,
-          sameSite: "none",
-          domain: ".onrender.com",
-          maxAge: 30 * 24 * 60 * 60 * 1000,
-          path: "/",
-        }
-      );
+      res.cookie('user', JSON.stringify({
+        _id: user._id,
+        name: user.name,
+        email: user.email
+      }), {
+        secure: true,
+        sameSite: 'none',
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        path: '/'
+      });
 
       res.json({
         _id: user._id,
         name: user.name,
         email: user.email,
-        message: "Login successful",
+        message: "Login successful"
       });
     } else {
       res.status(401).json({ message: "Invalid email or password" });
@@ -162,15 +147,12 @@ app.post("/api/auth/login", async (req, res) => {
 app.get("/api/auth/profile", async (req, res) => {
   try {
     const token = req.cookies?.token;
-
+    
     if (!token) {
       return res.status(401).json({ message: "No token provided" });
     }
 
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET || "fallback_secret"
-    );
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "fallback_secret");
     const user = await User.findById(decoded.id).select("-password");
 
     if (!user) {
@@ -188,36 +170,17 @@ app.get("/api/auth/profile", async (req, res) => {
   }
 });
 
-// @desc    Logout user
-// @route   POST /api/auth/logout
-app.post("/api/auth/logout", (req, res) => {
-  // Clear cookies
-  res.clearCookie("token", {
-    domain: ".onrender.com",
-    path: "/",
-  });
-  res.clearCookie("user", {
-    domain: ".onrender.com",
-    path: "/",
-  });
-
-  res.json({ message: "Logged out successfully" });
-});
-
 // @desc    Check auth status
 // @route   GET /api/auth/check
 app.get("/api/auth/check", async (req, res) => {
   try {
     const token = req.cookies?.token;
-
+    
     if (!token) {
       return res.json({ authenticated: false });
     }
 
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET || "fallback_secret"
-    );
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "fallback_secret");
     const user = await User.findById(decoded.id).select("-password");
 
     if (!user) {
@@ -229,12 +192,22 @@ app.get("/api/auth/check", async (req, res) => {
       user: {
         _id: user._id,
         name: user.name,
-        email: user.email,
-      },
+        email: user.email
+      }
     });
   } catch (error) {
     res.json({ authenticated: false });
   }
+});
+
+// @desc    Logout user
+// @route   POST /api/auth/logout
+app.post("/api/auth/logout", (req, res) => {
+  // Clear cookies
+  res.clearCookie('token');
+  res.clearCookie('user');
+  
+  res.json({ message: "Logged out successfully" });
 });
 
 // ==================== EXISTING ROUTES ====================
@@ -268,17 +241,16 @@ app.get("/allOrders", async (req, res) => {
 
 // Health check route
 app.get("/health", (req, res) => {
-  res.json({
-    status: "OK",
+  res.json({ 
+    status: "OK", 
     message: "Zerodha Clone Backend is running",
-    timestamp: new Date().toISOString(),
+    timestamp: new Date().toISOString()
   });
 });
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  mongoose
-    .connect(uri)
+  mongoose.connect(uri)
     .then(() => console.log("MongoDB connected successfully"))
-    .catch((err) => console.error("MongoDB connection error:", err));
+    .catch(err => console.error("MongoDB connection error:", err));
 });

@@ -53,11 +53,11 @@ const Signup = () => {
         credentials: "include",
       });
 
-
       const data = await response.json();
 
       if (response.ok) {
         alert("Registration successful! Redirecting to dashboard...");
+        // Redirect to dashboard
         window.location.href = "https://zerodha-clone-dashboard-krkg.onrender.com";
       } else {
         setError(data.message || "Registration failed");
