@@ -85,9 +85,13 @@ function Universe() {
           <button
             className="fs-lg-5  btn btn-primary mb-5 mt-5 px-1 hero-btn"
             style={{ width: "20%", margin: "0 auto" }}
+            onClick={() =>
+              (window.location.href =
+                "https://zerodha-clone-dashboard-krkg.onrender.com/")
+            }
           >
             {" "}
-            Signup Now {" "}
+            Signup Now{" "}
           </button>
         </div>
       </div>
