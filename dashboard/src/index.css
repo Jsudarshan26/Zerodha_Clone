@@ -854,7 +854,36 @@ hr {
 
 
 
-/* User Info Section Styles */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f8f9fa;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.loading-spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #387ed1;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-container p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
 .user-info-section {
   display: flex;
   align-items: center;
@@ -888,26 +917,10 @@ hr {
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.8rem;
-  transition: background-color 0.2s;
 }
 
 .logout-btn:hover {
   background: #c82333;
-}
-
-/* If you need to adjust the topbar layout */
-.topbar-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem 1rem;
-  background: #f8f9fa;
-  border-bottom: 1px solid #e6e6e6;
-}
-
-.indices-container {
-  display: flex;
-  gap: 2rem;
 }
 
 

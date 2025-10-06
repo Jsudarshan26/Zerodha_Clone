@@ -13,14 +13,14 @@ const Home = () => {
   const checkAuthentication = async () => {
     try {
       const response = await fetch('https://zerodha-clone-ufoh.onrender.com/api/auth/profile', {
-        credentials: 'include',
+        credentials: 'include', // This will send cookies
       });
 
       if (response.ok) {
         const userData = await response.json();
         setUser(userData);
       } else {
-        // Redirect to login if not authenticated
+        // If not authenticated, redirect to login
         window.location.href = "https://zerodha-clone-frontend-yb92.onrender.com/login";
       }
     } catch (error) {
